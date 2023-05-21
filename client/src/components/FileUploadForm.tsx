@@ -7,11 +7,6 @@ import FileViewer from "./FileViewer";
 import { UploadedFiles } from "../datatypes/types";
 import "./FileUploadForm.css";
 
-// const initUploadFileState = {
-//   description: "",
-//   files: [],
-// }
-
 const FileUploadForm: React.FC = () => {
   const [description, setDescription] = useState<string>("");
   const [fileList, setFileList] = useState<FileList | null>(null);

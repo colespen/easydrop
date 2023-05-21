@@ -4,8 +4,8 @@
 
 - drag and drop multiple files.
 
-### FileList data ->
+<strong>FileList data -><strong>
 
-Server:
+### Server:
 
 - Node.js Express using Multer middleware storage engine for upload

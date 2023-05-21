@@ -1,5 +1,6 @@
 h2 {
-  margin-bottom: 30px;
+  margin-bottom: 0px;
+  padding-bottom: 15px;
   font-size: 30px;
 }
 
@@ -27,14 +28,24 @@ h2 {
 input {
   margin-top: 5px;
 }
-button {
+button[type="submit"] {
   margin-top: 15px;
   width: 100%;
+  background-color: #2b308c;
+}
+
+.messages {
+  height: 8em;
+  font-size: 10px;
+  width: 100%;
+  max-width: 44em;
 }
 
 .upload-message {
-  height: 40px;
+  height: 100%;
+  font-size: 20px;
   color: rgb(146 239 146);
+  margin: 0;
 }
 
 .progress-container {
@@ -54,4 +65,19 @@ button {
   width: 42px;
   display: flex;
   justify-content: flex-end;
+}
+
+.filename-list {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+li {
+  margin-right: 25px;
+}
+
+.file-viewer {
+  height: 10em;
 }

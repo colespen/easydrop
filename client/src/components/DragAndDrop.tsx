@@ -2,7 +2,7 @@ import { ChangeEvent, SetStateAction, useRef, useState } from "react";
 import { DragDropFileProps } from "../datatypes/prop-interfaces";
 import "./DragAndDrop.css";
 
-function DragDropFile({ setFileList }: DragDropFileProps) {
+const DragDropFile = ({ setFileList, setUploadStatus }: DragDropFileProps) => {
   const [isDrag, setIsDrag] = useState<SetStateAction<boolean>>(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
@@ -11,6 +11,7 @@ function DragDropFile({ setFileList }: DragDropFileProps) {
     if (e.target.files && e.target.files[0]) {
       setFileList(e.target.files);
     }
+    setUploadStatus("");
   };
 
   const handleDrag = (e: any) => {
@@ -32,6 +33,7 @@ function DragDropFile({ setFileList }: DragDropFileProps) {
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
       setFileList(e.dataTransfer.files);
     }
+    setUploadStatus("");
   };
 
   const onButtonClick = () => {
@@ -77,6 +79,6 @@ function DragDropFile({ setFileList }: DragDropFileProps) {
       )}
     </form>
   );
-}
+};
 
 export default DragDropFile;

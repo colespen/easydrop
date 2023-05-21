@@ -1,9 +1,13 @@
+import axios from "axios";
+import { UploadedFiles } from "../datatypes/types";
+
 const uploadFiles = async (
   description: string,
   filesArray: File[],
   setSuccess: React.Dispatch<React.SetStateAction<boolean>>,
   setUploadStatus: React.Dispatch<React.SetStateAction<string>>,
-  setUploadPercentage: React.Dispatch<React.SetStateAction<number>>
+  setUploadPercentage: React.Dispatch<React.SetStateAction<number>>,
+  setUploadedFiles: React.Dispatch<React.SetStateAction<UploadedFiles>>
 ) => {
   const formData = new FormData();
   formData.append("description", description);
@@ -13,36 +17,34 @@ const uploadFiles = async (
   });
 
   try {
-    const response = await fetch("http://localhost:8001/uploadfiles", {
-      method: "POST",
-      body: formData,
-      //  "Content-Type": "multipart/form-data" - done automatically
-    });
-    const reader = response.body?.getReader();
-    if (!reader) {
-      throw new Error("Failed to get response body reader");
-    }
-    const contentLength = Number(response.headers.get("Content-Length"));
-    let uploadedBytes = 0;
-    let isFinished = false;
-
-    while (!isFinished) {
-      const { done, value } = await reader.read();
-      if (done) {
-        isFinished = true;
-        break;
+    const response = await axios.post(
+      "http://localhost:8001/uploadfiles",
+      formData,
+      {
+        onUploadProgress: (progressEvent) => {
+          if (progressEvent && progressEvent.total) {
+            setUploadPercentage(
+              Math.round((progressEvent.loaded * 100) / progressEvent.total)
+            );
+          }
+          setTimeout(() => {
+            setUploadPercentage(0);
+            setUploadStatus("");
+          }, 2000);
+        },
       }
-      uploadedBytes += value?.length || 0;
-      const progress = (uploadedBytes / contentLength) * 100;
-      setUploadPercentage(progress);
-    }
-    // const { value } = await reader.read();
-    // console.log("value:", value);
-    setUploadStatus("upload Successful :)))");
+    );
+    const { description, files } = response.data;
+    console.log("fileName:, description:", files, description);
+
+    setUploadedFiles({ description, files });
     setSuccess(true);
-  } catch (err: unknown) {
-    console.log(err);
-    setUploadStatus("Server Error!");
+    setUploadStatus("Upload Successful");
+  } catch (err: any) {
+    console.error(err.message);
+    err.response.status === 500
+      ? setUploadStatus("Server error")
+      : setUploadStatus(err);
   }
 };
 

@@ -18,7 +18,7 @@
     border-width: 2px;
     border-radius: 1rem;
     border-style: dashed;
-    border-color: #404040;
+    border-color: #636363;
     background-color: #282a2b;
 }
 
@@ -37,7 +37,7 @@
   }
 
   #label-file-upload.drag-active {
-    background-color: #535bf27a;
+    background-color: #2b308cdd;
   }
 
   #drag-overlay {

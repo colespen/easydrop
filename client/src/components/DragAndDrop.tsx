@@ -1,17 +1,15 @@
-import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
+import { ChangeEvent, SetStateAction, useRef, useState } from "react";
+import { DragDropFileProps } from "../datatypes/prop-interfaces";
 import "./DragAndDrop.css";
 
-interface DragDropFileProps {
-  setFileList: Dispatch<SetStateAction<FileList | null>>;
-}
-
 function DragDropFile({ setFileList }: DragDropFileProps) {
-  const [isDrag, setIsDrag] = useState<boolean>(false);
+  const [isDrag, setIsDrag] = useState<SetStateAction<boolean>>(false);
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   const handleFileClick = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     if (e.target.files && e.target.files[0]) {
-        setFileList(e.target.files);
+      setFileList(e.target.files);
     }
   };
 
@@ -36,6 +34,9 @@ function DragDropFile({ setFileList }: DragDropFileProps) {
     }
   };
 
+  const onButtonClick = () => {
+    if (inputRef.current) inputRef.current.click();
+  };
 
   return (
     <form
@@ -46,6 +47,7 @@ function DragDropFile({ setFileList }: DragDropFileProps) {
       onSubmit={(e) => e.preventDefault()}
     >
       <input
+        ref={inputRef}
         id="input-file-upload"
         type="file"
         multiple
@@ -57,8 +59,10 @@ function DragDropFile({ setFileList }: DragDropFileProps) {
         htmlFor="input-file-upload"
       >
         <div>
-          <p>drag & drop file(s) or</p>
-          <button className="select-button">click</button>
+          <p>drag & drop file(s) or click</p>
+          <button className="select-button" onClick={onButtonClick}>
+            select file(s)
+          </button>
         </div>
       </label>
       {/* this element is invisible, just listens to drag events */}

@@ -1,14 +1,17 @@
 import { ChangeEvent, useEffect, useState } from "react";
-import { uploadFiles } from "../services/fileUpload";
-import "./FileUploadForm.css";
+import { uploadFiles } from "../services/uploadFiles";
 import DragDropFile from "./DragAndDrop";
+import Status from "./Message";
+import ProgressBar from "./ProgressBar";
+import "./FileUploadForm.css";
 
 const FileUploadForm: React.FC = () => {
   const [description, setDescription] = useState<string>("");
   const [fileList, setFileList] = useState<FileList | null>(null);
   const [filesArray, setFilesArray] = useState<any>([]);
-
-  console.log("filesArray:", filesArray)
+  const [onSuccess, setOnSuccess] = useState<boolean>(false);
+  const [uploadStatus, setUploadStatus] = useState<string>("");
+  const [uploadPercentage, setUploadPercentage] = useState<number>(0);
 
   useEffect(() => {
     // FileList is an obj ... need to spread this to get array
@@ -22,18 +25,26 @@ const FileUploadForm: React.FC = () => {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    uploadFiles(description, filesArray);
+    if (filesArray.length === 0) {
+      setUploadStatus("no files dude");
+      return;
+    }
+    uploadFiles(
+      description,
+      filesArray,
+      setOnSuccess,
+      setUploadStatus,
+      setUploadPercentage
+    );
+    setFilesArray([]);
   };
 
   return (
     <>
       <h2>UPLOAD SOME SWEET FILES</h2>
+      <Status status={uploadStatus} />
       <div className="form-container">
-        <div
-          className="form-main"
-          // action="/upload_files"
-          // encType="multipart/form-data"
-        >
+        <div className="form-main">
           <div className="description-input">
             <label>file description</label>
             <input
@@ -44,13 +55,12 @@ const FileUploadForm: React.FC = () => {
               onChange={handleSetDescription}
             />
           </div>
-          <DragDropFile
-            setFileList={setFileList}
-          />
+          <DragDropFile setFileList={setFileList} />
           <button type="submit" onClick={handleSubmit}>
             upload
           </button>
         </div>
+        <ProgressBar uploadPercentage={uploadPercentage} />
       </div>
     </>
   );

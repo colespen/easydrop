@@ -1,5 +1,6 @@
 h2 {
   margin-bottom: 30px;
+  font-size: 30px;
 }
 
 .form-main {
@@ -24,10 +25,33 @@ h2 {
 }
 
 input {
-  margin-top: 5px
+  margin-top: 5px;
 }
 button {
   margin-top: 15px;
   width: 100%;
 }
 
+.upload-message {
+  height: 40px;
+  color: rgb(146 239 146);
+}
+
+.progress-container {
+  bottom: 15em;
+  left: 16em;
+  transform: rotate(-90deg);
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+.progress-bar {
+  width: 23em;
+  height: 2em;
+}
+.progress-percent {
+  margin-right: 5px;
+  width: 42px;
+  display: flex;
+  justify-content: flex-end;
+}

@@ -27,7 +27,7 @@ app.post("/uploadfiles", storageEngine_1.upload.array("files"), // use the uploa
     }
     console.log("req.body", req.body.description); // text input
     console.log("req.files", req.files); // files attached[]
-    res.send(req.files); // res.json() messed this up!
+    res.send(req.files);
 });
 // function uploadFiles(req: Request, res: Response) {
 //     console.log(req.body)

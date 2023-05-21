@@ -1,11 +1,14 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { uploadFiles } from "../services/fileUpload";
 import "./FileUploadForm.css";
+import DragDropFile from "./DragAndDrop";
 
 const FileUploadForm: React.FC = () => {
   const [description, setDescription] = useState<string>("");
   const [fileList, setFileList] = useState<FileList | null>(null);
   const [filesArray, setFilesArray] = useState<any>([]);
+
+  console.log("filesArray:", filesArray)
 
   useEffect(() => {
     // FileList is an obj ... need to spread this to get array
@@ -17,10 +20,6 @@ const FileUploadForm: React.FC = () => {
     setDescription(e.target.value);
   };
 
-  const handleFileSelect = (e: ChangeEvent<HTMLInputElement>) => {
-    setFileList(e.target.files);
-  };
-
   const handleSubmit = (e: any) => {
     e.preventDefault();
     uploadFiles(description, filesArray);
@@ -30,10 +29,10 @@ const FileUploadForm: React.FC = () => {
     <>
       <h2>UPLOAD SOME SWEET FILES</h2>
       <div className="form-container">
-        <form
-          className="form-upload"
-          action="/upload_files"
-          encType="multipart/form-data"
+        <div
+          className="form-main"
+          // action="/upload_files"
+          // encType="multipart/form-data"
         >
           <div className="description-input">
             <label>file description</label>
@@ -45,19 +44,13 @@ const FileUploadForm: React.FC = () => {
               onChange={handleSetDescription}
             />
           </div>
-          <div className="file-select">
-            <label>Select file(s)</label>
-            <input
-              id="files"
-              type="file"
-              multiple
-              onChange={handleFileSelect}
-            />
-          </div>
+          <DragDropFile
+            setFileList={setFileList}
+          />
           <button type="submit" onClick={handleSubmit}>
             upload
           </button>
-        </form>
+        </div>
       </div>
     </>
   );

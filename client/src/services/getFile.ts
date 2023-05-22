@@ -3,13 +3,13 @@ import axios from "axios";
 const getFile = async (filename: string) => {
     try {
       const response = await axios.get(
-        `http://localhost:8001/uploadfiles/${filename}`
+        `${import.meta.env.VITE_SERVER}/uploadfiles/${filename}`
       );
-      console.log("response.data:", response.data);
+      console.log("response:", response);
 
       if (response.status < 400) {
-        const fileURL = new URL(response.data, 'file:');
-        window.open(fileURL.href, "_blank", "noreferrer");
+        // const fileURL = new URL(response.data, 'file:');
+       
       }
     } catch (err: any) {
       console.log("Error:", err);

@@ -16,14 +16,21 @@ app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use("/uploads", express_1.default.static("uploads"));
-app.get("/uploadfiles/:filename", (req, res) => {
-    const filepath = path_1.default.join(__dirname.slice(0, -5), // hack
+// get individual file to be read by client
+app.get("/uploadfiles/:filename", (req, res, next) => {
+    const filepath = path_1.default.join(__dirname.slice(0, -5), // bad hack - rm /dist
     `/uploads/${req.params.filename}`);
+    try {
+        res.sendFile(filepath);
+    }
+    catch (err) {
+        // Pass the error to the error-handling middleware
+        next(err);
+    }
+    res.sendFile(filepath);
     console.log("filepath:", filepath);
-    // res.sendFile(filepath); // TODO: no file reading on client for now...
-    res.send(filepath);
 });
-// array for multiple files. "files" arg depends on name of input
+// upload array for multiple files. "files" arg depends on name of input
 app.post("/uploadfiles", storageEngine_1.upload.array("files"), // use the upload middleware
 (req, res) => {
     if (!req.files) {
@@ -33,9 +40,15 @@ app.post("/uploadfiles", storageEngine_1.upload.array("files"), // use the uploa
     console.log("req.files", req.files); // files attached[]
     res.json({ files: req.files, description: req.body.description });
 });
-// function uploadFiles(req: Request, res: Response) {
-//     console.log(req.body)
-// }
+// error handling middleware
+app.use((err, req, res, next) => {
+    // handle specific error types if needed
+    if (err.code === "ENOENT") {
+        // File not found error
+        return res.status(404).send("File not found");
+    }
+    res.status(500).send("Internal server error");
+});
 app.listen(port, () => {
     console.log(`Server listening on port ${port} `);
 });

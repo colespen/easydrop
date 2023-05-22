@@ -18,7 +18,7 @@ const uploadFiles = async (
 
   try {
     const response = await axios.post(
-      "http://localhost:8001/uploadfiles",
+      `${import.meta.env.VITE_SERVER}/uploadfiles`,
       formData,
       {
         onUploadProgress: (progressEvent) => {
@@ -35,7 +35,8 @@ const uploadFiles = async (
       }
     );
     const { description, files } = response.data;
-    console.log("fileName:, description:", files, description);
+    console.log("response:", response);
+    // console.log("fileName:, description:", files, description);
 
     setUploadedFiles({ description, files });
     setSuccess(true);

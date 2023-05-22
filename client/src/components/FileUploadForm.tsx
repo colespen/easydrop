@@ -4,7 +4,7 @@ import DragDropFile from "./DragAndDrop";
 import Status from "./Message";
 import ProgressBar from "./ProgressBar";
 import FileViewer from "./FileViewer";
-import { UploadedFiles } from "../datatypes/types";
+import { ButtonEvent, UploadedFiles } from "../datatypes/types";
 import "./FileUploadForm.css";
 
 const FileUploadForm: React.FC = () => {
@@ -29,7 +29,7 @@ const FileUploadForm: React.FC = () => {
   };
 
   const handleSubmit = useMemo(
-    () => (e: SubmitEvent) => {
+    () => (e: ButtonEvent) => {
       e.preventDefault();
       if (filesArray.length === 0) {
         setUploadStatus("no files dude");

@@ -25,8 +25,7 @@ app.get("/uploadfiles/:filename", (req, res, next) => {
         res.sendFile(filepath);
     }
     catch (err) {
-        // will pass error to error-handling middleware
-        next(err);
+        next(err); // will pass error to error-handling middleware
     }
     console.log("filepath:", filepath);
 });
@@ -51,7 +50,7 @@ app.delete("/uploadfiles/delete/:filename", (req, res) => {
     });
 });
 // error handling middleware
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
     // handle specific error types if needed
     if (err.code === "ENOENT") {
         // File not found error

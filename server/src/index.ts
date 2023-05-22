@@ -26,8 +26,7 @@ app.get(
     try {
       res.sendFile(filepath);
     } catch (err) {
-      // will pass error to error-handling middleware
-      next(err);
+      next(err); // will pass error to error-handling middleware
     }
     console.log("filepath:", filepath);
   }
@@ -48,18 +47,18 @@ app.post(
 // del individual file
 app.delete("/uploadfiles/delete/:filename", (req: Request, res: Response) => {
   const filepath = path.join(
-    __dirname.slice(0, -5), 
+    __dirname.slice(0, -5),
     `/uploads/${req.params.filename}`
   );
   fs.unlink(filepath, (err) => {
     if (err) throw err;
-    console.log("file destroyed")
-    res.send("file destroyed")
-  })
+    console.log("file destroyed");
+    res.send("file destroyed");
+  });
 });
 
 // error handling middleware
-app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+app.use((err: any, req: Request, res: Response) => {
   // handle specific error types if needed
   if (err.code === "ENOENT") {
     // File not found error

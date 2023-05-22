@@ -3,9 +3,9 @@ const Status = ({
   filesArray,
 }: {
   status: string;
-  filesArray: any[];
+  filesArray: File[];
 }) => {
-  const filenameList = filesArray.map((file: any, i: number) => (
+  const filenameList = filesArray.map((file: File, i: number) => (
     <li key={file.name + i}>{file.name}</li>
   ));
 

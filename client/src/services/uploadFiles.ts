@@ -38,7 +38,11 @@ const uploadFiles = async (
     console.log("response:", response);
     // console.log("fileName:, description:", files, description);
 
-    setUploadedFiles({ description, files });
+    setUploadedFiles((prev: UploadedFiles) => ({
+      ...prev,
+      description: prev.description || description,
+      files: [...prev.files, ...files],
+    }));
     setSuccess(true);
     setUploadStatus("Upload Successful");
   } catch (err: any) {

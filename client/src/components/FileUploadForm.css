@@ -81,3 +81,16 @@ li {
 .file-viewer {
   height: 10em;
 }
+
+.uploaded-file-row {
+  cursor: pointer;
+}
+
+.delete-button {
+  color: rgb(255 175 175);
+  padding-left: 10px;
+  cursor: pointer;
+}
+.delete-button:hover {
+  color: #ff0000;
+}

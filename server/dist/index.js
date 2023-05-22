@@ -8,26 +8,26 @@ const cors_1 = __importDefault(require("cors"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const storageEngine_1 = require("./storageEngine");
 const path_1 = __importDefault(require("path"));
+const fs_1 = __importDefault(require("fs"));
 const app = (0, express_1.default)();
 const port = process.env.PORT || 8001;
-////    cors no config accepts all origins/headers
 dotenv_1.default.config();
+//// cors no config accepts all origins/headers
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use("/uploads", express_1.default.static("uploads"));
 // get individual file to be read by client
 app.get("/uploadfiles/:filename", (req, res, next) => {
-    const filepath = path_1.default.join(__dirname.slice(0, -5), // bad hack - rm /dist
+    const filepath = path_1.default.join(__dirname.slice(0, -5), // bad hack - removes /dist
     `/uploads/${req.params.filename}`);
     try {
         res.sendFile(filepath);
     }
     catch (err) {
-        // Pass the error to the error-handling middleware
+        // will pass error to error-handling middleware
         next(err);
     }
-    res.sendFile(filepath);
     console.log("filepath:", filepath);
 });
 // upload array for multiple files. "files" arg depends on name of input
@@ -39,6 +39,16 @@ app.post("/uploadfiles", storageEngine_1.upload.array("files"), // use the uploa
     console.log("req.body.description", req.body.description); // text input
     console.log("req.files", req.files); // files attached[]
     res.json({ files: req.files, description: req.body.description });
+});
+// del individual file
+app.delete("/uploadfiles/delete/:filename", (req, res) => {
+    const filepath = path_1.default.join(__dirname.slice(0, -5), `/uploads/${req.params.filename}`);
+    fs_1.default.unlink(filepath, (err) => {
+        if (err)
+            throw err;
+        console.log("file destroyed");
+        res.send("file destroyed");
+    });
 });
 // error handling middleware
 app.use((err, req, res, next) => {

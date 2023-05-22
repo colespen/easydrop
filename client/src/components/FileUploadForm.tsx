@@ -52,7 +52,7 @@ const FileUploadForm: React.FC = () => {
 
   return (
     <>
-      <FileViewer uploadedFiles={uploadedFiles} />
+      <FileViewer uploadedFiles={uploadedFiles} setUploadedFiles={setUploadedFiles} />
       <h2>UPLOAD SOME SWEET FILES</h2>
       <Status status={uploadStatus} filesArray={filesArray} />
       <div className="form-container">

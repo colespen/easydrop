@@ -1,5 +1,6 @@
 import { ChangeEvent, SetStateAction, useRef, useState } from "react";
 import { DragDropFileProps } from "../datatypes/prop-interfaces";
+import { DragDropEvent } from "../datatypes/types";
 import "./DragAndDrop.css";
 
 const DragDropFile = ({ setFileList, setUploadStatus }: DragDropFileProps) => {
@@ -14,7 +15,7 @@ const DragDropFile = ({ setFileList, setUploadStatus }: DragDropFileProps) => {
     setUploadStatus("");
   };
 
-  const handleDrag = (e: any) => {
+  const handleDrag = (e: DragDropEvent) => {
     e.preventDefault();
     e.stopPropagation();
     if (e.type === "dragenter" || e.type === "dragover") {
@@ -24,7 +25,7 @@ const DragDropFile = ({ setFileList, setUploadStatus }: DragDropFileProps) => {
     }
   };
 
-  const handleFileDrop = (e: any) => {
+  const handleFileDrop = (e: DragDropEvent) => {
     e.preventDefault();
     e.stopPropagation();
     setIsDrag(false);
@@ -43,8 +44,6 @@ const DragDropFile = ({ setFileList, setUploadStatus }: DragDropFileProps) => {
   return (
     <form
       id="form-file-upload"
-      // action="/upload_files"
-      // encType="multipart/form-data"
       onDragEnter={handleDrag}
       onSubmit={(e) => e.preventDefault()}
     >

@@ -10,19 +10,18 @@ import "./FileUploadForm.css";
 const FileUploadForm: React.FC = () => {
   const [description, setDescription] = useState<string>("");
   const [fileList, setFileList] = useState<FileList | null>(null);
-  const [filesArray, setFilesArray] = useState<any>([]);
-  const [onSuccess, setOnSuccess] = useState<boolean>(false);
+  const [filesArray, setFilesArray] = useState<File[]>([]);
   const [uploadStatus, setUploadStatus] = useState<string>("");
   const [uploadPercentage, setUploadPercentage] = useState<number>(0);
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFiles>({
     description: "",
     files: [],
-  });
+  }); // temp: this would come from database to persist refresh
 
   useEffect(() => {
     // FileList is an obj ... need to spread this to get array
     const newFiles = fileList ? [...fileList] : [];
-    setFilesArray((prev: never) => [...prev, ...newFiles]);
+    setFilesArray((prev: File[]) => [...prev, ...newFiles]);
   }, [fileList]);
   // console.log("filesArray:", filesArray);
   const handleSetDescription = (e: ChangeEvent<HTMLInputElement>) => {
@@ -30,7 +29,7 @@ const FileUploadForm: React.FC = () => {
   };
 
   const handleSubmit = useMemo(
-    () => (e: any) => {
+    () => (e: SubmitEvent) => {
       e.preventDefault();
       if (filesArray.length === 0) {
         setUploadStatus("no files dude");
@@ -39,7 +38,6 @@ const FileUploadForm: React.FC = () => {
       uploadFiles(
         description,
         filesArray,
-        setOnSuccess,
         setUploadStatus,
         setUploadPercentage,
         setUploadedFiles
@@ -52,7 +50,10 @@ const FileUploadForm: React.FC = () => {
 
   return (
     <>
-      <FileViewer uploadedFiles={uploadedFiles} setUploadedFiles={setUploadedFiles} />
+      <FileViewer
+        uploadedFiles={uploadedFiles}
+        setUploadedFiles={setUploadedFiles}
+      />
       <h2>UPLOAD SOME SWEET FILES</h2>
       <Status status={uploadStatus} filesArray={filesArray} />
       <div className="form-container">

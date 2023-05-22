@@ -5,7 +5,6 @@ const deleteFile = async (filename: string) => {
     const response = await axios.delete(
       `${import.meta.env.VITE_SERVER}/uploadfiles/delete/${filename}`
     );
-    console.log("response:", response);
 
     if (response.status === 200) {
       console.log("file destroyed");

@@ -4,7 +4,6 @@ import { UploadedFiles } from "../datatypes/types";
 const uploadFiles = async (
   description: string,
   filesArray: File[],
-  setSuccess: React.Dispatch<React.SetStateAction<boolean>>,
   setUploadStatus: React.Dispatch<React.SetStateAction<string>>,
   setUploadPercentage: React.Dispatch<React.SetStateAction<number>>,
   setUploadedFiles: React.Dispatch<React.SetStateAction<UploadedFiles>>
@@ -15,7 +14,6 @@ const uploadFiles = async (
   filesArray.forEach((file: File) => {
     formData.append("files", file, file.name);
   });
-
   try {
     const response = await axios.post(
       `${import.meta.env.VITE_SERVER}/uploadfiles`,
@@ -35,15 +33,12 @@ const uploadFiles = async (
       }
     );
     const { description, files } = response.data;
-    console.log("response:", response);
-    // console.log("fileName:, description:", files, description);
 
     setUploadedFiles((prev: UploadedFiles) => ({
       ...prev,
       description: prev.description || description,
       files: [...prev.files, ...files],
     }));
-    setSuccess(true);
     setUploadStatus("Upload Successful");
   } catch (err: any) {
     console.error(err.message);

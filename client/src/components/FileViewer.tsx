@@ -1,19 +1,9 @@
-import { UploadedFiles } from "../datatypes/types";
+import { FileViewerProps } from "../datatypes/prop-interfaces";
 import { handleDeleteFile } from "../eventHandlers.ts/handleDeleteFile";
 import { getFile } from "../services/getFile";
-import "./FileUploadForm.css";
 
-const FileViewer = ({
-  uploadedFiles,
-  setUploadedFiles,
-}: {
-  uploadedFiles: UploadedFiles;
-  setUploadedFiles: React.Dispatch<React.SetStateAction<UploadedFiles>>;
-}) => {
-  console.log("uploadedFiles:", uploadedFiles);
-
+const FileViewer = ({ uploadedFiles, setUploadedFiles }: FileViewerProps) => {
   const uploadedFilesList = uploadedFiles.files.map((el, i) => {
-    // console.log(el);
     return (
       <li key={i + el.originalname}>
         <a className="uploaded-file-row" onClick={() => getFile(el.filename)}>
